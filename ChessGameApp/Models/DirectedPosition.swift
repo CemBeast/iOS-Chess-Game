@@ -14,6 +14,19 @@ struct DirectedPosition {
     let perspective: Team
     
     
+    func allSpaces(calculateNextPosition: (DirectedPosition) -> DirectedPosition?) -> [DirectedPosition]{
+        
+        var res = [DirectedPosition]()
+        var current = self
+        
+        while let nextPosition = calculateNextPosition(current) {
+            res.append(nextPosition)
+            current = nextPosition
+        }
+        
+        return res
+    }
+    
     // farthest position in front of piece
     var front: DirectedPosition? {
         
@@ -89,6 +102,54 @@ struct DirectedPosition {
             .back?
             .right
         
+    }
+    
+    var frontSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.front
+        }
+    }
+    
+    var backSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.back
+        }
+    }
+    
+    var leftSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.left
+        }
+    }
+    
+    var rightSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.right
+        }
+    }
+    
+    var diagonalLeftFrontSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.diagonalLeftFront
+        }
+    }
+    
+    var diagonalRightFrontSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.diagonalRightFront
+        }
+    }
+    
+    var diagonalLeftBackSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.diagonalLeftBack
+        }
+    }
+    
+    var diagonalRightBackSpaces: [DirectedPosition] {
+        return allSpaces { position in
+            position.diagonalRightBack
+        }
     }
     
 }

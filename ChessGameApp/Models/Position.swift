@@ -41,4 +41,59 @@ struct Position: Equatable {
         return IndexPath(row: convertedRow, column: convertedRank)
     }
     
+    func isAdjacent(otherPosition: Position) -> Bool {
+        
+        let directedPosition = DirectedPosition(position: self, perspective: .white)
+        let adjacentPosition = [
+            directedPosition.front,
+            directedPosition.back,
+            directedPosition.left,
+            directedPosition.right,
+            directedPosition.diagonalLeftFront,
+            directedPosition.diagonalRightFront,
+            directedPosition.diagonalLeftBack,
+            directedPosition.diagonalRightBack,
+        ].compactMap {
+            $0?.position
+        }
+        return adjacentPosition.contains(otherPosition)
+        
+    }
+    
+    func isValidPath(array: [Position]) -> Bool {
+        
+        guard !array.isEmpty  else { return true}
+        
+        var iterator = array.makeIterator()
+        var current = iterator.next()!
+        
+        while let nextElement = iterator.next() {
+            guard current.isAdjacent(otherPosition: nextElement) else { return false}
+            current = nextElement
+        }
+        
+        return true
+        
+    }
+    
+    
+    
+}
+
+extension Position: Comparable {
+    static func < (lhs: Position, rhs: Position) -> Bool {
+        return lhs.gridIndex < rhs.gridIndex
+    }
+    
+    
+}
+
+extension Position: Hashable {
+    
+}
+
+extension Position : CustomStringConvertible {
+    var description: String {
+        "\(rank) - \(row.rawValue)"
+    }
 }
