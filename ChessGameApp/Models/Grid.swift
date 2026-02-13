@@ -35,5 +35,26 @@ struct Grid<Element> {
         self.columnSize = columnSize
     }
     
+    subscript(row: Int, column: Int) -> Element {
+        
+        get {
+            return columns[column][row]
+        }
+        
+        set{
+            columns[column][row] = newValue
+        }
+    }
+    
+    subscript(position: IndexPath) -> Element {
+        
+        get {
+            return self[position.row, position.column]
+        }
+        
+        set {
+            self[position.row, position.column] = newValue
+        }
+    }
     
 }
